@@ -1,0 +1,5 @@
+# Plain Python examples: basic_pipeline.py and search_local.py.
+# Only apify-client talks to the network; rank-bm25 is the keyless, pure-Python
+# search fallback. Pins are the versions these examples were tested with.
+apify-client==3.3.0
+rank-bm25==0.2.2

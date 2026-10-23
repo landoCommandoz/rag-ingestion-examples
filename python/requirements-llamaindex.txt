@@ -1,0 +1,6 @@
+# llamaindex_example.py: reader, local embeddings, in-memory VectorStoreIndex.
+# Install torch first for a small CPU-only setup (see requirements-embeddings.txt).
+apify-client==3.3.0
+llama-index-core==0.14.25
+llama-index-embeddings-huggingface==0.8.0
+sentence-transformers==6.2.0

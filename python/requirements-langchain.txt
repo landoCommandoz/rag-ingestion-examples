@@ -1,0 +1,8 @@
+# langchain_example.py: loader, local embeddings, in-memory Chroma vector store.
+# Install torch first for a small CPU-only setup (see requirements-embeddings.txt).
+apify-client==3.3.0
+langchain-core==1.7.0
+langchain-huggingface==1.2.3
+langchain-chroma==1.1.0
+chromadb==1.5.9
+sentence-transformers==6.2.0

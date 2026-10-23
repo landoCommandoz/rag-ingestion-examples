@@ -1,0 +1,5 @@
+# Optional: local sentence embeddings for search_local.py (all-MiniLM-L6-v2, Apache 2.0).
+# Pulls in PyTorch. On Linux the default wheel includes CUDA libraries (over 2 GB);
+# for a small CPU-only install run this first:
+#   pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+sentence-transformers==6.2.0

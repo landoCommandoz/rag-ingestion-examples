@@ -1,0 +1,21 @@
+# generated output from the examples
+out/
+
+# local Python environments
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# local secrets: tokens live in the environment, never in the repo
+.env
+.env.*
+
+# vector store files written by the framework examples
+python/faiss_index/
+python/storage/
+
+# editor and OS noise
+.DS_Store
+.idea/
+.vscode/

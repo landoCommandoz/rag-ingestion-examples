@@ -1,0 +1,241 @@
+{
+  "name": "RAG ingest: family chunks from PDF and audio",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "pdfUrl",
+              "value": "https://www.federalreserve.gov/releases/h41/current/h41.pdf",
+              "type": "string"
+            },
+            {
+              "id": "a2",
+              "name": "pdfPages",
+              "value": "1-2",
+              "type": "string"
+            },
+            {
+              "id": "a3",
+              "name": "audioUrl",
+              "value": "https://archive.org/download/gettysburg_shurtagal_librivox/Gettysburg_Address_Lincoln_64kb.mp3",
+              "type": "string"
+            },
+            {
+              "id": "a4",
+              "name": "audioTier",
+              "value": "standard",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Set source URLs",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        200
+      ],
+      "notesInFlow": true,
+      "notes": "Replace with your own public PDF and audio/video URLs. pdfPages like \"1-5\" or \"3-\" limits what is parsed and charged."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/landoz~pdf-to-json-tables/run-sync-get-dataset-items",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $env.APIFY_TOKEN }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ pdfUrls: [$json.pdfUrl], pages: $json.pdfPages }) }}",
+        "options": {
+          "timeout": 300000
+        }
+      },
+      "name": "Run PDF Actor",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        460,
+        80
+      ],
+      "notesInFlow": true,
+      "notes": "pdf-to-json-tables, $0.003 per page. Token comes from the APIFY_TOKEN environment variable (or swap the header for a Header Auth credential). run-sync waits up to 300 s."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/landoz~transcribe-to-json-chunks/run-sync-get-dataset-items",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $env.APIFY_TOKEN }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ audioUrls: [$json.audioUrl], model: $json.audioTier }) }}",
+        "options": {
+          "timeout": 300000
+        }
+      },
+      "name": "Run Transcription Actor",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        460,
+        320
+      ],
+      "notesInFlow": true,
+      "notes": "transcribe-to-json-chunks, $0.012 per minute standard, $0.035 accurate. For recordings longer than about 10 minutes use the async run endpoint and poll, because run-sync stops waiting after 300 s."
+    },
+    {
+      "parameters": {
+        "numberInputs": 2
+      },
+      "name": "Merge both outputs",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        700,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Flatten chunks[] from both Actor responses into one record per chunk.\n// Each input item is one dataset row: a PDF page (pdf-to-json-tables) or a\n// recording (transcribe-to-json-chunks). Both carry the same chunk schema.\nconst records = [];\nfor (const { json: item } of $input.all()) {\n  if (item.error) continue; // unreadable file: never charged, nothing to index\n  for (const chunk of item.chunks || []) {\n    const c = chunk.citation;\n    records.push({\n      json: {\n        id: `${item.documentId}:${c.type === 'page' ? 'p' + c.page : 't' + c.startMs}:c${chunk.chunkIndex}`,\n        text: chunk.text,\n        source_url: item.sourceUrl,\n        citation_type: c.type,\n        citation_label: c.label, // \"p. 3\" or \"00:12:03-00:12:48\"\n        page: c.page ?? null,\n        start_ms: c.startMs ?? null,\n        end_ms: c.endMs ?? null,\n        chunk_index: chunk.chunkIndex,\n        char_start: chunk.charStart,\n        char_end: chunk.charEnd,\n      },\n    });\n  }\n}\nreturn records;\n"
+      },
+      "name": "Flatten chunks with citations",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        920,
+        200
+      ]
+    },
+    {
+      "parameters": {},
+      "name": "Chunks ready for your vector store",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1140,
+        200
+      ],
+      "notesInFlow": true,
+      "notes": "Connect your vector store node here (Pinecone, Qdrant, Supabase, Postgres pgvector ...). Use text as the content and citation_label, source_url, page, start_ms, end_ms as metadata."
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set source URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set source URLs": {
+      "main": [
+        [
+          {
+            "node": "Run PDF Actor",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Run Transcription Actor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run PDF Actor": {
+      "main": [
+        [
+          {
+            "node": "Merge both outputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Transcription Actor": {
+      "main": [
+        [
+          {
+            "node": "Merge both outputs",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge both outputs": {
+      "main": [
+        [
+          {
+            "node": "Flatten chunks with citations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flatten chunks with citations": {
+      "main": [
+        [
+          {
+            "node": "Chunks ready for your vector store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false
+  }
+}

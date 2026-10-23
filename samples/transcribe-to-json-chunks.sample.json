@@ -1,0 +1,72 @@
+{
+  "_note": "Real output of landoz/transcribe-to-json-chunks (documents mode, standard tier, the Actor's default public-domain sample) from a test run on 2026-10-23. Long strings are cut and marked with ..., 3 of 25 segments are kept, and both chunks are shown.",
+  "sourceUrl": "https://archive.org/download/gettysburg_shurtagal_librivox/Gettysburg_Address_Lincoln_64kb.mp3",
+  "documentId": "247ecb8f79ca4937c028ffd5ae45d2286c304a9d",
+  "fileName": "Gettysburg_Address_Lincoln_64kb.mp3",
+  "durationMs": 100336,
+  "transcribedMs": 100336,
+  "durationMinutesBilled": 2,
+  "language": "en",
+  "languageProbability": 0.9953,
+  "model": "standard",
+  "text": "This is the Libra Box Recording, all the Vox recordings in the public domain. To find out more or see how you can volunteer, please visit LibraBox.org. The Gideysburg Address by Abraham Lincoln, November 19, 1863. Four s ...",
+  "segments": [
+    {
+      "index": 0,
+      "startMs": 0,
+      "endMs": 4200,
+      "text": "This is the Libra Box Recording, all the Vox recordings in the public domain.",
+      "confidence": 0.5706
+    },
+    {
+      "index": 1,
+      "startMs": 4200,
+      "endMs": 8120,
+      "text": "To find out more or see how you can volunteer, please visit LibraBox.org.",
+      "confidence": 0.762
+    },
+    {
+      "index": 2,
+      "startMs": 8120,
+      "endMs": 13680,
+      "text": "The Gideysburg Address by Abraham Lincoln, November 19, 1863.",
+      "confidence": 0.631
+    }
+  ],
+  "chunks": [
+    {
+      "chunkIndex": 0,
+      "text": "This is the Libra Box Recording, all the Vox recordings in the public domain. To find out more or see how you can volunteer, please visit LibraBox.org. The Gideysburg Address by Abraham Lincoln, November 19, 1863. Four s ...",
+      "charStart": 0,
+      "charEnd": 1077,
+      "startMs": 0,
+      "endMs": 63200,
+      "citation": {
+        "type": "time",
+        "startMs": 0,
+        "endMs": 63200,
+        "label": "00:00:00-00:01:03"
+      }
+    },
+    {
+      "chunkIndex": 1,
+      "text": "r above our poor power to add or detract. The world will little note no longer remember what we say here, but it can never forget what they did here. It is for us the living rather to be dedicated here to this unfanished ...",
+      "charStart": 928,
+      "charEnd": 1682,
+      "startMs": 50640,
+      "endMs": 97840,
+      "citation": {
+        "type": "time",
+        "startMs": 50640,
+        "endMs": 97840,
+        "label": "00:00:51-00:01:38"
+      }
+    }
+  ],
+  "subtitles": {
+    "srtUrl": "https://api.apify.com/v2/key-value-stores/vjuAFTSiWa6aVBa2K/records/247ecb8f79ca4937c028ffd5ae45d2286c304a9d.srt?signature=QWCtHr64MsCCKIZn1K7Q",
+    "vttUrl": "https://api.apify.com/v2/key-value-stores/vjuAFTSiWa6aVBa2K/records/247ecb8f79ca4937c028ffd5ae45d2286c304a9d.vtt?signature=1d2mAXlcbF2joJKIFVdRE"
+  },
+  "warnings": [],
+  "transcribedAt": "2026-10-23T20:01:20.151Z"
+}

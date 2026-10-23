@@ -1,0 +1,95 @@
+{
+  "_note": "Real output of landoz/pdf-to-json-tables (pages mode, page 2 of the sample PDF) from a test run on 2026-10-23. Long strings are cut and marked with ..., the table shows 6 of its rows, and only 2 of the page's 3 chunks are kept so the schema is easy to read.",
+  "sourceUrl": "https://www.federalreserve.gov/releases/h41/current/h41.pdf",
+  "documentId": "6cb2cd9838d643a55fd6591794268e74e7b0224d",
+  "fileName": "h41.pdf",
+  "page": 2,
+  "pageCount": 12,
+  "width": 612,
+  "height": 792,
+  "text": "FEDERAL RESERVE statistical release\nH.4.1\nFactors Affecting Reserve Balances of Depository Institutions and\nCondition Statement of Federal Reserve Banks\nOctober 22, 2026\n1. Factors Affecting Reserve Balances of Depositor ...",
+  "markdown": "## FEDERAL RESERVE statistical release\n\nH.4.1 Factors Affecting Reserve Balances of Depository Institutions and Condition Statement of Federal Reserve Banks October 22, 2026\n\n## 1. Factors Affecting Reserve Balances of D ...",
+  "tables": [
+    {
+      "tableIndex": 0,
+      "bbox": [
+        251.75,
+        173.27,
+        503.75,
+        519.23
+      ],
+      "rowCount": 33,
+      "columnCount": 3,
+      "header": [
+        "Averages of daily figures",
+        "",
+        ""
+      ],
+      "rows": [
+        [
+          "Averages of daily figures",
+          "",
+          ""
+        ],
+        [
+          "",
+          "Change from week ended",
+          ""
+        ],
+        [
+          "Week ended",
+          "",
+          ""
+        ],
+        [
+          "Oct 21, 2026",
+          "Oct 14, 2026",
+          "Oct 22, 2025"
+        ],
+        [
+          "6,706,861",
+          "- 789",
+          "+ 161,908"
+        ],
+        [
+          "6,470,860",
+          "+ 492",
+          "+ 187,540"
+        ]
+      ],
+      "markdown": "| Averages of daily figures |  |  |\n| --- | --- | --- |\n|  | Change from week ended |  |\n| Week ended |  |  |\n| Oct 21, ...",
+      "strategy": "lines+text",
+      "page": 2
+    }
+  ],
+  "chunks": [
+    {
+      "chunkIndex": 0,
+      "page": 2,
+      "charStart": 0,
+      "charEnd": 608,
+      "text": "FEDERAL RESERVE statistical release\nH.4.1\nFactors Affecting Reserve Balances of Depository Institutions and\nCondition Statement of Federal Reserve Banks\nOctober 22, 2026\n1. Factors Affecting Reserve Balances of Depositor ...",
+      "citation": {
+        "type": "page",
+        "page": 2,
+        "label": "p. 2"
+      }
+    },
+    {
+      "chunkIndex": 1,
+      "page": 2,
+      "charStart": 460,
+      "charEnd": 1659,
+      "text": "Oct 14, 2026 Oct 22, 2025\nReserve Bank credit 6,706,861 - 789 + 161,908 6,706,851\nSecurities held outright1 6,470,860 + 492 + 187,540 6,470,178\nU.S. Treasury securities 4,571,248 + 1,337 + 374,817 4,572,654\nBills2 566,57 ...",
+      "citation": {
+        "type": "page",
+        "page": 2,
+        "label": "p. 2"
+      }
+    }
+  ],
+  "ocrUsed": false,
+  "charCount": 2103,
+  "warnings": [],
+  "extractedAt": "2026-10-23T19:59:39.737Z"
+}
